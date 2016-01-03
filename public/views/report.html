@@ -1,0 +1,27 @@
+<div class="container">
+  <h2 class="text-center">Hand History</h2>
+  <table class="table table-condensed">
+    <thead>
+      <tr>
+        <th>Hand Date</th>
+        <th>Hand Result</th>
+        <th>Hand Type</th>
+        <th>Player Hand</th>
+        <th>Player Hand Value</th>
+        <th>Computer Hand</th>
+        <th>Computer Hand Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="objHand in arrHandData">
+        <td>{{ objHand.creationDate }}</td>
+        <td>{{ objHand.result }}</td>
+        <td>{{ objHand.handType }}</td>
+        <td><div ng-repeat="strPlayerHand in objHand.playerCardKeys">{{ strPlayerHand }} </td>
+        <td>{{ objHand.playerHandValue }}</td>
+        <td><div ng-repeat="strComputerHand in objHand.computerCardKeys">{{ strComputerHand }} </td>
+        <td>{{ objHand.computerHandValue }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

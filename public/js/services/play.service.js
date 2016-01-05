@@ -1,6 +1,6 @@
 var app = angular.module('BlackJackModule');
 
-app.service('PlayService', ['$http', function($http){
+app.service('PlayService', ['$http', function($http) {
 
   var baseUrl = "http://dev.sandbox.com:5000/api";
 
@@ -16,7 +16,7 @@ app.service('PlayService', ['$http', function($http){
   this.intComputerCardValue = 0;
 
   // Run's a request and gets user's bankroll.
-  this.getBankroll = function(){
+  this.getBankroll = function() {
     return $http.get(baseUrl + '/user')
       .then(function(response) {
         this.dblBankroll = response.data[0].bankroll;
@@ -33,88 +33,79 @@ app.service('PlayService', ['$http', function($http){
       arrReturnedKeys = this.returnCardKeys(this.arrPlayerCards, false);
       arrCards = this.arrPlayerCards;
       intHandValue = this.intPlayerCardValue;
-    }
-    else {
+    } else {
       arrReturnedKeys = this.returnCardKeys(this.arrComputerCards, false);
       arrCards = this.arrComputerCards;
       intHandValue = this.intComputerCardValue;
     }
     for (var intCardKey in arrReturnedKeys) {
       if (arrReturnedKeys[intCardKey] === 'C1' || arrReturnedKeys[intCardKey] === 'S1' ||
-      arrReturnedKeys[intCardKey] === 'H1' || arrReturnedKeys[intCardKey] === 'D1') {
-        for(var objKey in arrCards[intCardKey])
+        arrReturnedKeys[intCardKey] === 'H1' || arrReturnedKeys[intCardKey] === 'D1') {
+        for (var objKey in arrCards[intCardKey])
           if (arrCards[intCardKey][objKey] !== 1) {
             arrCards[intCardKey][objKey] = 1;
             return true;
           }
-        }
       }
+    }
     return false;
   }
 
   // Builds the deck, single deck.
   this.buildNewDeck = function() {
     this.arrDeck = [];
-    for(i = 1; i <= 4; i++) {
+    for (i = 1; i <= 4; i++) {
       for (var j = 1; j <= 13; j++) {
         var strKey = '';
         var objCard = {};
-        if(i === 1) {
+        if (i === 1) {
           strKey = "C" + j;
           if (j >= 2 && j <= 10) {
             objCard[strKey] = j;
             this.arrDeck.push(objCard);
-          }
-          else if (j > 10) {
+          } else if (j > 10) {
             objCard[strKey] = 10;
             this.arrDeck.push(objCard);
-          }
-          else if (j === 1) {
+          } else if (j === 1) {
             objCard[strKey] = 11;
             this.arrDeck.push(objCard);
           }
         }
-        if(i === 2) {
+        if (i === 2) {
           strKey = "S" + j;
           if (j >= 2 && j <= 10) {
             objCard[strKey] = j;
             this.arrDeck.push(objCard);
-          }
-          else if (j > 10) {
+          } else if (j > 10) {
             objCard[strKey] = 10;
             this.arrDeck.push(objCard);
-          }
-          else if (j === 1) {
+          } else if (j === 1) {
             objCard[strKey] = 11;
             this.arrDeck.push(objCard);
           }
         }
-        if(i === 3) {
+        if (i === 3) {
           strKey = "H" + j;
           if (j >= 2 && j <= 10) {
             objCard[strKey] = j;
             this.arrDeck.push(objCard);
-          }
-          else if (j > 10) {
+          } else if (j > 10) {
             objCard[strKey] = 10;
             this.arrDeck.push(objCard);
-          }
-          else if (j === 1) {
+          } else if (j === 1) {
             objCard[strKey] = 11;
             this.arrDeck.push(objCard);
           }
         }
-        if(i === 4) {
+        if (i === 4) {
           strKey = "D" + j;
           if (j >= 2 && j <= 10) {
             objCard[strKey] = j;
             this.arrDeck.push(objCard);
-          }
-          else if (j > 10) {
+          } else if (j > 10) {
             objCard[strKey] = 10;
             this.arrDeck.push(objCard);
-          }
-          else if (j === 1) {
+          } else if (j === 1) {
             objCard[strKey] = 11;
             this.arrDeck.push(objCard);
           }
@@ -126,7 +117,7 @@ app.service('PlayService', ['$http', function($http){
   // If bet amount less than bankroll take that money from bankroll and add to
   // bet.
   this.placeBet = function(intAmount) {
-    if(intAmount <= this.dblBankroll) {
+    if (intAmount <= this.dblBankroll) {
       this.dblBetAmount += intAmount;
       this.dblBankroll -= intAmount;
       return true;
@@ -142,7 +133,7 @@ app.service('PlayService', ['$http', function($http){
   };
 
   // Deals two cards for player and computer.
-  this.dealCards = function(){
+  this.dealCards = function() {
     this.strHandType = 'standard';
     this.strResult = '';
     for (var i = 0; i < 2; i++) {
@@ -181,67 +172,67 @@ app.service('PlayService', ['$http', function($http){
   // Returns an array of cards name.
   this.returnCardNames = function(arrCards) {
     var arrReturnedNames = [];
-      for (var i = 0; i < arrCards.length; i++) {
-        var strCardName = '';
-        for (var key in arrCards[i]) {
-          switch (key[0]) {
-            case 'S':
-              strCardName = 'Spades';
-              break;
-            case 'D':
-              strCardName = 'Diamonds';
-              break;
-            case 'C':
-              strCardName = 'Clubs';
-              break;
-            case 'H':
-              strCardName = 'Hearts';
-              break;
-          }
-          switch (key.match(/[0-9].*/)[0]) {
-            case '1':
-              strCardName = strCardName.replace (/^/, 'Ace of ');
-              break;
-            case '2':
-              strCardName = strCardName.replace (/^/, 'Two of ');
-              break;
-            case '3':
-              strCardName = strCardName.replace (/^/, 'Three of ');
-              break;
-            case '4':
-              strCardName = strCardName.replace (/^/, 'Four of ');
-              break;
-            case '5':
-              strCardName = strCardName.replace (/^/, 'Five of ');
-              break;
-            case '6':
-              strCardName = strCardName.replace (/^/, 'Six of ');
-              break;
-            case '7':
-              strCardName = strCardName.replace (/^/, 'Seven of ');
-              break;
-            case '8':
-              strCardName = strCardName.replace (/^/, 'Eight of ');
-              break;
-            case '9':
-              strCardName = strCardName.replace (/^/, 'Nine of ');
-              break;
-            case '10':
-              strCardName = strCardName.replace (/^/, 'Ten of ');
-              break;
-            case '11':
-              strCardName = strCardName.replace (/^/, 'Jack of ');
-              break;
-            case '12':
-              strCardName = strCardName.replace (/^/, 'Queen of ');
-              break;
-            case '13':
-              strCardName = strCardName.replace (/^/, 'King of ');
-              break;
-          }
-
-          arrReturnedNames.push(strCardName);
+    for (var i = 0; i < arrCards.length; i++) {
+      var strCardName = '';
+      for (var key in arrCards[i]) {
+        switch (key[0]) {
+          case 'S':
+            strCardName = 'Spades';
+            break;
+          case 'D':
+            strCardName = 'Diamonds';
+            break;
+          case 'C':
+            strCardName = 'Clubs';
+            break;
+          case 'H':
+            strCardName = 'Hearts';
+            break;
         }
+        switch (key.match(/[0-9].*/)[0]) {
+          case '1':
+            strCardName = strCardName.replace(/^/, 'Ace of ');
+            break;
+          case '2':
+            strCardName = strCardName.replace(/^/, 'Two of ');
+            break;
+          case '3':
+            strCardName = strCardName.replace(/^/, 'Three of ');
+            break;
+          case '4':
+            strCardName = strCardName.replace(/^/, 'Four of ');
+            break;
+          case '5':
+            strCardName = strCardName.replace(/^/, 'Five of ');
+            break;
+          case '6':
+            strCardName = strCardName.replace(/^/, 'Six of ');
+            break;
+          case '7':
+            strCardName = strCardName.replace(/^/, 'Seven of ');
+            break;
+          case '8':
+            strCardName = strCardName.replace(/^/, 'Eight of ');
+            break;
+          case '9':
+            strCardName = strCardName.replace(/^/, 'Nine of ');
+            break;
+          case '10':
+            strCardName = strCardName.replace(/^/, 'Ten of ');
+            break;
+          case '11':
+            strCardName = strCardName.replace(/^/, 'Jack of ');
+            break;
+          case '12':
+            strCardName = strCardName.replace(/^/, 'Queen of ');
+            break;
+          case '13':
+            strCardName = strCardName.replace(/^/, 'King of ');
+            break;
+        }
+
+        arrReturnedNames.push(strCardName);
+      }
     }
     return arrReturnedNames;
   };
@@ -249,11 +240,11 @@ app.service('PlayService', ['$http', function($http){
   // returns the total card value.
   this.returnCardValues = function(arrCards) {
     var arrReturnedValues = [];
-      for (var i = 0; i < arrCards.length; i++) {
-        for (var key in arrCards[i]) {
-          arrReturnedValues.push(arrCards[i][key]);
-        }
+    for (var i = 0; i < arrCards.length; i++) {
+      for (var key in arrCards[i]) {
+        arrReturnedValues.push(arrCards[i][key]);
       }
+    }
     return arrReturnedValues.reduce(function(a, b) {
       return a + b;
     });
@@ -270,47 +261,37 @@ app.service('PlayService', ['$http', function($http){
         } else {
           this.intResult = 1;
         }
-      }
-      else if (this.intComputerCardValue > 21) {
+      } else if (this.intComputerCardValue > 21) {
         if (this.aceFound('computer')) {
           this.checkPlay(true);
         } else {
           this.intResult = 2;
         }
-      }
-      else if (this.intComputerCardValue > this.intPlayerCardValue && this.intComputerCardValue <= 21) {
+      } else if (this.intComputerCardValue > this.intPlayerCardValue && this.intComputerCardValue <= 21) {
         this.intResult = 1;
-      }
-      else if(this.intComputerCardValue < this.intPlayerCardValue) {
+      } else if (this.intComputerCardValue < this.intPlayerCardValue) {
         this.intResult = 2;
-      }
-      else if(this.intComputerCardValue === this.intPlayerCardValue) {
+      } else if (this.intComputerCardValue === this.intPlayerCardValue) {
         this.intResult = 3;
       }
-    }
-    else {
+    } else {
       if (this.intComputerCardValue === 21 && this.intPlayerCardValue !== 21) {
         this.intResult = 1;
-      }
-      else if (this.intComputerCardValue !== 21 && this.intPlayerCardValue === 21) {
+      } else if (this.intComputerCardValue !== 21 && this.intPlayerCardValue === 21) {
         if (this.arrComputerCards.length > 2) {
           this.intResult = 2;
-        }
-        else if (this.arrComputerCards.length === 2 && this.arrPlayerCards.length === 2) {
+        } else if (this.arrComputerCards.length === 2 && this.arrPlayerCards.length === 2) {
           this.intResult = 2;
         }
-      }
-      else if (this.intComputerCardValue === 21 && this.intPlayerCardValue === 21) {
+      } else if (this.intComputerCardValue === 21 && this.intPlayerCardValue === 21) {
         this.intResult = 3;
-      }
-      else if (this.intComputerCardValue > 21) {
+      } else if (this.intComputerCardValue > 21) {
         if (this.aceFound('computer')) {
           this.checkPlay();
         } else {
           this.intResult = 2;
         }
-      }
-      else if (this.intPlayerCardValue > 21) {
+      } else if (this.intPlayerCardValue > 21) {
         if (this.aceFound('player')) {
           this.checkPlay();
         } else {
@@ -381,22 +362,22 @@ app.service('PlayService', ['$http', function($http){
     var arrComputerCardNames = this.returnCardNames(this.arrComputerCards);
     var arrPlayerCardNames = this.returnCardNames(this.arrPlayerCards);
     var objHand = {
-      playerCardKeys : arrPlayerCardNames,
-      computerCardKeys : arrComputerCardNames,
-      playerHandValue : this.intPlayerCardValue,
-      computerHandValue : this.intComputerCardValue,
-      handType : this.strHandType,
-      betAmount : this.dblBetAmount,
+      playerCardKeys: arrPlayerCardNames,
+      computerCardKeys: arrComputerCardNames,
+      playerHandValue: this.intPlayerCardValue,
+      computerHandValue: this.intComputerCardValue,
+      handType: this.strHandType,
+      betAmount: this.dblBetAmount,
       result: strResult
     };
 
     $http.post(baseUrl + '/hand', objHand)
-      .then(function(response){
+      .then(function(response) {
         console.log(response.data);
       });
 
     var objUser = {
-      bankroll : this.dblBankroll
+      bankroll: this.dblBankroll
     };
 
     $http.put(baseUrl + '/user', objUser)
@@ -433,7 +414,7 @@ app.service('PlayService', ['$http', function($http){
 
   // Adds the double to bet, player takes one card.
   this.doubleDown = function() {
-    if(this.dblBetAmount <= this.dblBankroll) {
+    if (this.dblBetAmount <= this.dblBankroll) {
       this.strHandType = 'double-down';
       this.dblBankroll -= this.dblBetAmount;
       this.dblBetAmount += this.dblBetAmount;

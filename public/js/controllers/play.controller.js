@@ -1,6 +1,6 @@
 var app = angular.module('BlackJackModule');
 
-app.controller('PlayController', ['$scope', 'PlayService', function($scope, PlayService){
+app.controller('PlayController', ['$scope', 'PlayService', function($scope, PlayService) {
 
   // Variables on Scope.
   $scope.blnBetPlaced = false;
@@ -9,9 +9,10 @@ app.controller('PlayController', ['$scope', 'PlayService', function($scope, Play
   $scope.blnHitTaken = false;
   $scope.blnBetClearable = false;
   $scope.dblBetAmount = 0;
-  $scope.arrPlayerCards = [];
+  $scope.dblInitialAmount = 0;
+  // $scope.arrPlayerCards = [];
   $scope.intPlayerValue = '';
-  $scope.arrComputerCards = [];
+  // $scope.arrComputerCards = [];
   $scope.intComputerValue = '';
   $scope.arrPlayMessage = [];
 
@@ -29,7 +30,7 @@ app.controller('PlayController', ['$scope', 'PlayService', function($scope, Play
     });
 
   // Checks to see if any result has occurred, populates some scoped variables.
-  var messageCheck = function(){
+  var messageCheck = function() {
     if ($scope.arrPlayMessage.length !== 0) {
       for (var message in $scope.arrPlayMessage) {
         switch ($scope.arrPlayMessage[message]) {
@@ -60,7 +61,7 @@ app.controller('PlayController', ['$scope', 'PlayService', function($scope, Play
       $scope.blnBetPlaced = true;
       $scope.blnBetClearable = true;
     } else {
-      alert('Sorry, but bankroll is too low.');
+      toastr.error('Sorry, but bankroll is too low.');
     }
   };
 
@@ -75,6 +76,7 @@ app.controller('PlayController', ['$scope', 'PlayService', function($scope, Play
 
   $scope.deal = function() {
     PlayService.dealCards();
+    $scope.dblInitialAmount = PlayService.dblBetAmount;
     $scope.arrPlayerCards = PlayService.returnCardKeys(PlayService.arrPlayerCards);
     $scope.arrComputerCards = PlayService.returnCardKeys(PlayService.arrComputerCards, true);
     $scope.arrPlayMessage = PlayService.checkPlay();
@@ -118,7 +120,7 @@ app.controller('PlayController', ['$scope', 'PlayService', function($scope, Play
       }
     } else {
       // Show alert if not enough money to double.
-      alert('Sorry, you don\'nt have enough money to double down.');
+      toastr.error('Sorry, you don\'nt have enough money to double down.')
     }
   };
 

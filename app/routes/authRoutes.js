@@ -16,7 +16,7 @@ authRouter.post('/signup', function (req, res) {
 authRouter.post('/login', function (req, res) {
     User.findOne({ username: req.body.username }, function (err, user) {
         if (err) res.status(500).send(err);
-        if (!user) res.status(401).send('The username you entered does not exist');
+        if (!user) res.status(401).send('The username you entered does not exist.');
         else if (user) {
             bcrypt.compare(req.body.password, user.password, function (err, match) {
                 if (err) throw (err);

@@ -11,7 +11,7 @@ var cors = require('cors');
 var db = mongoose.connect(config.dbLocation);
 
 // Add headers
-app.use(function (req, res, next) {
+app.use(function(req, res, next) {
 
   res.setHeader('Access-Control-Allow-Origin', 'http://dev.sandbox.com:8080');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
@@ -26,7 +26,9 @@ var port = process.env.PORT || 5000;
 app.use(cors());
 app.use(morgan('dev'));
 app.use(bodyParser.json());
-app.use('/api', expressJwt({ secret: config.secret }));
+app.use('/api', expressJwt({
+  secret: config.secret
+}));
 app.use('/api/hand', require('./app/routes/blackJackRoutes.js'));
 app.use('/api/user', require('./app/routes/userRoutes.js'));
 app.use('/auth', require('./app/routes/authRoutes.js'));

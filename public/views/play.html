@@ -1,60 +1,62 @@
 <div class="play-area">
-<div class="computer-play-area">
-<div class="row">
-  <div class="col-xs-12 text-center">
-    <h3>
-      Computer Cards
-    </h3>
+  <div class="computer-play-area">
+    <div class="row">
+      <div class="col-xs-12 text-center">
+        <h3>
+          Computer Cards
+        </h3>
+      </div>
+    </div>
+    <div class="row">
+      <div ng-repeat="strComputerCard in arrComputerCards" class="col-xs-2 text-center">
+        <img ng-src="//dev.sandbox.com:8080/angular-class/homework/12/blackjack/public/img/PNG-cards-1.3/{{ strComputerCard }}.png"></img>
+      </div>
+      <div class="col-xs-12 text-center">
+        {{ intComputerValue }}
+      </div>
+    </div>
   </div>
-</div>
-<div class="row">
-  <div ng-repeat="strCard in arrComputerCards" class="col-xs-2 text-center">
-    <img src="//dev.sandbox.com:8080/angular-class/homework/12/blackjack/public/img/PNG-cards-1.3/{{ strCard }}.png"></img>
-  </div>
-  <div class="col-xs-12 text-center">
-    {{ intComputerValue }}
-  </div>
-</div>
-</div>
-<hr />
-<div class="player-play-area">
-<div class="row player-card-area">
-  <div class="col-xs-2 text-center" ng-repeat="strCard in arrPlayerCards">
-    <img src="//dev.sandbox.com:8080/angular-class/homework/12/blackjack/public/img/PNG-cards-1.3/{{ strCard }}.png"></img>
-  </div>
-</div>
-  <div class="col-xs-12 text-center">
-    {{ intPlayerValue }}
+  <hr/>
+  <div class="player-play-area">
+    <div class="row player-card-area">
+      <div class="col-xs-2 text-center" ng-repeat="strPlayerCard in arrPlayerCards">
+        <img ng-src="//dev.sandbox.com:8080/angular-class/homework/12/blackjack/public/img/PNG-cards-1.3/{{ strPlayerCard }}.png"></img>
+      </div>
+    </div>
+    <div class="col-xs-12 text-center">
+      {{ intPlayerValue }}
+    </div>
+    <div class="row">
+      <div class="col-xs-12 text-center">
+        <h3>
+          Player Cards
+        </h3>
+      </div>
+    </div>
+    <div class="col-xs-12 text-center">
+      <p>Player's Bet Amount:
+        {{ dblBetAmount }}</p>
+    </div>
+    <div ng-if="arrPlayMessage !== null" class="col-xs-12 text-center result-alert">
+      <p ng-repeat="strPlayMessage in arrPlayMessage">{{ strPlayMessage }}</p>
+    </div>
   </div>
   <div class="row">
     <div class="col-xs-12 text-center">
-      <h3>
-        Player Cards
-      </h3>
+      <button type="button" ng-click="placeBet(1)" ng-if="blnHandStarted === false && blnPlayAgain === false" class="btn">Bet 1</button>
+      <button type="button" ng-click="placeBet(5)" ng-if="blnHandStarted === false && blnPlayAgain === false" class="btn">Bet 5</button>
+      <button type="button" ng-click="placeBet(10)" ng-if="blnHandStarted === false && blnPlayAgain === false" class="btn">Bet 10</button>
+      <button type="button" ng-click="placeBet(dblInitialAmount)" ng-if="blnHandStarted === false && blnPlayAgain === false && dblInitialAmount" class="btn">Re-Bet</button>
+      <button type="button" ng-click="clearBet()" ng-if="blnHandStarted === false && blnPlayAgain === false && blnBetClearable === true" class="btn">Clear Bet</button>
+      <button type="button" class="btn" ng-show="blnHandStarted" ng-click="stay('computer')">Stay</button>
+      <button type="button" class="btn" ng-show="blnHandStarted" ng-click="hit('player')">Hit</button>
+      <button type="button" class="btn" ng-show="blnHandStarted && !blnHitTaken" ng-click="doubleDown('player')">Double Down</button>
+      <button type="button" ng-click="deal()" ng-if="blnBetPlaced === true && blnHandStarted === false && blnPlayAgain === false" class="btn">Deal</button>
+      <button type="button" ng-click="playAgain()" ng-if="blnPlayAgain === true" class="btn">Play Again</button>
+    </div>
+    <div class="col-xs-12 text-center">
+      <p>Player's Bankroll:
+        {{ dblBankroll }}</p>
     </div>
   </div>
-  <div class="col-xs-12 text-center">
-    <p>Player's Bet Amount: {{ dblBetAmount }}</p>
-  </div>
-  <div ng-if="arrPlayMessage !== null" class="col-xs-12 text-center">
-    <p ng-repeat="strPlayMessage in arrPlayMessage">{{ strPlayMessage }}</p>
-  </div>
-</div>
-<div class="row">
-  <div class="col-xs-12 text-center">
-    <button type="button" ng-click="placeBet(1)" ng-if="blnHandStarted === false && blnPlayAgain === false" class="btn">Bet 1</button>
-    <button type="button" ng-click="placeBet(5)" ng-if="blnHandStarted === false && blnPlayAgain === false" class="btn">Bet 5</button>
-    <button type="button" ng-click="placeBet(10)" ng-if="blnHandStarted === false && blnPlayAgain === false" class="btn">Bet 10</button>
-    <button type="button" ng-click="clearBet()" ng-if="blnHandStarted === false && blnPlayAgain === false && blnBetClearable === true" class="btn">Clear Bet</button>
-    <button type="button" class="btn" ng-show="blnHandStarted" ng-click="stay('computer')">Stay</button>
-    <button type="button" class="btn" ng-show="blnHandStarted" ng-click="hit('player')">Hit</button>
-    <button type="button" class="btn" ng-show="blnHandStarted && !blnHitTaken" ng-click="doubleDown('player')">Double Down</button>
-    <button type="button" ng-click="deal()" ng-if="blnBetPlaced === true && blnHandStarted === false && blnPlayAgain === false" class="btn">Deal</button>
-    <button type="button" ng-click="playAgain()" ng-if="blnPlayAgain === true" class="btn">Play Again</button>
-  </div>
-  <div class="col-xs-12 text-center">
-    <p>Player's Bankroll: {{ dblBankroll }}</p>
-  </div>
-</div>
-</div>
 </div>
